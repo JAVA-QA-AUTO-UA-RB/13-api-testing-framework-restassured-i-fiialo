@@ -1,3 +1,5 @@
+import io.restassured.response.Response;
+import org.example.helpers.UserApiHelper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -6,15 +8,18 @@ public class PlaceholderAPIUsersTest extends BaseTest {
 
     @Test(groups = {"smoke", "regression"})
     public void testGetUserById() {
-        // Ці dummy assertions використовується як заглушка для шаблону, обов*язково видаліть його після додавання реальної імплементації
-        Assert.assertTrue(true);
+        Response response = UserApiHelper.getUserById(1);
+
+        Assert.assertEquals(response.statusCode(), 200);
+        Assert.assertEquals(response.jsonPath().getInt("id"), 1);
+        Assert.assertEquals(response.jsonPath().getString("username"), "Bret");
     }
 
     @Test(groups = "regression")
     public void testGetUserByUsername() {
-        Assert.assertTrue(true);
+        Response response = UserApiHelper.getUserByUsername("Bret");
+
+        Assert.assertEquals(response.statusCode(), 200);
+        Assert.assertEquals(response.jsonPath().getString("[0].username"), "Bret");
     }
-
 }
-
-
